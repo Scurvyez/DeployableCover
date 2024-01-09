@@ -77,12 +77,22 @@ namespace DeployableCover
 
         public override void Draw()
         {
-            Vector3 drawPos = curDrawPos;
-            float scaleY = Mathf.Lerp(-1f, 0f, curScale);
-            drawPos.z += def.graphicData.drawSize.y * scaleY / 2;
-            drawPos.y = def.altitudeLayer.AltitudeFor();
+            // check if the building has reached its destination and finished scaling
+            if (reachedDestination && timeSinceDestReached >= coverExtension.maxInflateTicks)
+            {
+                // set curScale to maxScale if the building has finished scaling
+                curScale = coverExtension.maxScale;
+            }
+            else
+            {
+                // if not, interpolate the scaleY based on the current scaling phase
+                float scaleY = Mathf.Lerp(-1f, 0f, curScale);
+                curDrawPos.z += def.graphicData.drawSize.y * scaleY / 2;
+            }
 
-            Matrix4x4 matrix = Matrix4x4.TRS(drawPos, Rotation.AsQuat, new Vector3(curScale, 1f, curScale));
+            curDrawPos.y = def.altitudeLayer.AltitudeFor();
+
+            Matrix4x4 matrix = Matrix4x4.TRS(curDrawPos, Rotation.AsQuat, new Vector3(curScale, 1f, curScale));
             Graphics.DrawMesh(MeshPool.plane10, matrix, Graphic.MatSingle, 0, null, 0, null, false, false, false);
         }
 

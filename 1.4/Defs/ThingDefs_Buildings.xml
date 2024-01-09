@@ -10,7 +10,7 @@
         <category>Building</category>
         <label>Deployable cover launcher</label>
         <description>A launcher used for the immediate deployment of inflatable cover in firefights.</description> <!-- PLACEHOLDER -->
-        <drawerType>MapMeshAndRealTime</drawerType>
+        <drawerType>RealtimeOnly</drawerType>
         <size>(1, 1)</size>
         <blockWind>false</blockWind>
         <altitudeLayer>BuildingOnTop</altitudeLayer>
@@ -76,7 +76,7 @@
         <defName>SZ_DeployableCover</defName>
         <label>deployable cover</label>
         <description>A piece of rapidly inflatable shielding for pawns to seek cover behind during gunfights.</description>
-        <drawerType>MapMeshAndRealTime</drawerType>
+        <drawerType>RealtimeOnly</drawerType>
         <thingClass>DeployableCover.Building_InflatableCover</thingClass>
         <uiIconPath>DeployableCover/Things/Buildings/DeployableCoverA</uiIconPath> <!-- PLACEHOLDER -->
         <altitudeLayer>BuildingOnTop</altitudeLayer>
