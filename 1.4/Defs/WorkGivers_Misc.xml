@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <WorkGiverDef>
+        <defName>SZ_LoadCoverChargesWork</defName>
+        <label>load targetB into targetA</label>
+        <giverClass>DeployableCover.WorkGiver_LoadCharges</giverClass>
+        <workType>Hauling</workType>
+        <verb>load</verb>
+        <gerund>loading</gerund>
+        <priorityInType>145</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+
+</Defs>

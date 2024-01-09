@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>SZ_CoverCharge</defName>
+        <label>cover charge</label>
+        <description>A slightly volatile, airbag-like charge. Can be loaded into a deployable cover launcher for immediate deployment in rough situations.</description>
+        <tickerType>Normal</tickerType>
+        <graphicData>
+            <texPath>DeployableCover/Things/Items/CoverCharge</texPath>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>0.85</drawSize>
+        </graphicData>
+        <stackLimit>50</stackLimit>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <intricate>true</intricate>
+        <statBases>
+            <MaxHitPoints>5</MaxHitPoints>
+            <MarketValue>2.55</MarketValue>
+            <Mass>0.01</Mass>
+            <Flammability>1.15</Flammability>
+            <DeteriorationRate>1.0</DeteriorationRate>
+            <WorkToMake>360</WorkToMake>
+        </statBases>
+        <thingCategories>
+            <li>Manufactured</li>
+        </thingCategories>
+        <stuffCategories>
+            <li>Fabric</li>
+            <li>Leathery</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+        <costList>
+            <Steel>1</Steel>
+        </costList>
+        <recipeMaker>
+            <researchPrerequisite />
+            <recipeUsers>
+                <li>ElectricTailoringBench</li>
+                <li>HandTailoringBench</li>
+                <li>CraftingSpot</li>
+            </recipeUsers>
+            <skillRequirements>
+                <Crafting>3</Crafting>
+            </skillRequirements>
+        </recipeMaker>
+    </ThingDef>
+
+</Defs>

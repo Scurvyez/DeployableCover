@@ -1,0 +1,4 @@
+S:\Games\Steam\steamapps\common\RimWorld\Mods\DeployableCover\1.4\Assemblies\DeployableCover.dll
+S:\Games\Steam\steamapps\common\RimWorld\Mods\DeployableCover\1.4\Source\DeployableCover\obj\Debug\DeployableCover.csproj.AssemblyReference.cache
+S:\Games\Steam\steamapps\common\RimWorld\Mods\DeployableCover\1.4\Source\DeployableCover\obj\Debug\DeployableCover.csproj.CoreCompileInputs.cache
+S:\Games\Steam\steamapps\common\RimWorld\Mods\DeployableCover\1.4\Source\DeployableCover\obj\Debug\DeployableCover.dll
