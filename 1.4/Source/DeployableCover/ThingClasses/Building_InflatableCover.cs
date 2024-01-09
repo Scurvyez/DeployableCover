@@ -26,7 +26,7 @@ namespace DeployableCover
             coverExtension = def.GetModExtension<CoverExtension>();
             spawnTime = Find.TickManager.TicksGame;
             ticksFlying = 0;
-            curDrawPos = CalculateCurrentPosition();
+            curDrawPos = CoverStartCell.ToVector3() + coverExtension.startDrawOffset;
             curScale = coverExtension.minScale;
         }
 

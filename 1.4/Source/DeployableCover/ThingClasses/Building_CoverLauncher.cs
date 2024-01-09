@@ -74,7 +74,6 @@ namespace DeployableCover
 
             if (coverTemp != null)
             {
-                // Create an animated cover instance
                 Building_InflatableCover inflatableCover = ThingMaker.MakeThing(CoreDefOf.SZ_DeployableCover, coverTemp.Stuff) as Building_InflatableCover;
 
                 if (inflatableCover != null)
@@ -82,7 +81,7 @@ namespace DeployableCover
                     inflatableCover.CoverStartCell = this.Position;
                     inflatableCover.CoverDestCell = target;
 
-                    GenSpawn.Spawn(inflatableCover, target, map);
+                    GenSpawn.Spawn(inflatableCover, inflatableCover.CoverDestCell, map);
                     inflatableCover.SetFaction(Faction.OfPlayer);
                 }
 
