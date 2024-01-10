@@ -2,23 +2,22 @@
 <Defs>
 
     <!-- A launcher that deploys inflatable cover for pawns. -->
-    <!-- The cover is short lived but could save a pawn in a pinch. -->
 
     <ThingDef ParentName="BuildingBase">
         <defName>SZ_CoverLauncher</defName>
         <thingClass>DeployableCover.Building_CoverLauncher</thingClass>
         <category>Building</category>
         <label>Deployable cover launcher</label>
-        <description>A launcher used for the immediate deployment of inflatable cover in firefights.</description> <!-- PLACEHOLDER -->
+        <description>A launcher used for the immediate deployment of inflatable cover in firefights.</description>
         <drawerType>RealtimeOnly</drawerType>
         <size>(1, 1)</size>
-        <blockWind>false</blockWind>
+        <blockWind>true</blockWind>
         <altitudeLayer>BuildingOnTop</altitudeLayer>
         <passability>PassThroughOnly</passability>
         <pathCost>150</pathCost>
         <fillPercent>1.0</fillPercent>
         <tickerType>Normal</tickerType>
-        <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+        <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
         <scatterableOnMapGen>false</scatterableOnMapGen>
         <canOverlapZones>false</canOverlapZones>
         <castEdgeShadows>false</castEdgeShadows>
@@ -27,7 +26,7 @@
         <designationCategory>Security</designationCategory>
         <constructEffect>ConstructMetal</constructEffect>
         <costList>
-            <Steel>25</Steel>
+            <Steel>20</Steel>
             <Plasteel>3</Plasteel>
             <ComponentIndustrial>1</ComponentIndustrial>
         </costList>
@@ -55,8 +54,8 @@
                 <basePowerConsumption>100</basePowerConsumption>
             </li>
             <li Class="DeployableCover.CompProperties_LauncherStorage">
-                <maxChargeStorage>25</maxChargeStorage>
-                <minRequiredCharges>10</minRequiredCharges>
+                <maxChargeStorage>50</maxChargeStorage>
+                <minRequiredCharges>20</minRequiredCharges>
                 <chargeFilter>
                     <thingDefs>
                         <li>SZ_CoverCharge</li>
@@ -66,8 +65,46 @@
         </comps>
         <modExtensions>
             <li Class="DeployableCover.LauncherExtension">
-                <launchRadius>30</launchRadius>
-                <cooldownTicks>120</cooldownTicks>
+                <launchRadius>50</launchRadius>
+                <cooldownTicks>180</cooldownTicks>
+            </li>
+        </modExtensions>
+    </ThingDef>
+
+    <!-- ONLY USED FOR A FLYING ANIMATION -->
+
+    <ThingDef>
+        <defName>SW_CoverFlyer</defName>
+        <label>cover flyer</label>
+        <description>guess I need something here</description>
+        <drawerType>RealtimeOnly</drawerType>
+        <thingClass>DeployableCover.CoverFlyer</thingClass>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <tickerType>Normal</tickerType>
+        <selectable>false</selectable>
+        <stuffCategories>
+            <li>Fabric</li>
+            <li>Leathery</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+        <costList>
+            <Steel>1</Steel>
+        </costList>
+        <graphicData>
+            <texPath>DeployableCover/Things/Buildings/DeployableCoverA</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <modExtensions>
+            <li Class="DeployableCover.FlyerExtension">
+                <minScale>0.5</minScale>
+                <maxScale>1.0</maxScale>
+                <maxFlyTicks>60</maxFlyTicks>
+                <maxInflateTicks>30</maxInflateTicks>
+                <curveFactor>2</curveFactor>
+                <startDrawOffset>(0.5, 0, 2.1)</startDrawOffset>
+                <destDrawOffset>(0.5, 0, 0.375)</destDrawOffset>
+                <fleckDef>AirPuff</fleckDef>
+                <fleckMaxScale>1.75</fleckMaxScale>
             </li>
         </modExtensions>
     </ThingDef>
@@ -75,15 +112,19 @@
     <ThingDef ParentName="BuildingBase">
         <defName>SZ_DeployableCover</defName>
         <label>deployable cover</label>
-        <description>A piece of rapidly inflatable shielding for pawns to seek cover behind during gunfights.</description>
+        <thingClass>DeployableCover.Building_DeployableCover</thingClass>
+        <drawerType>RealtimeOnly</drawerType>
+        <tickerType>Normal</tickerType>
+        <description>A piece of rapidly inflatable shielding for pawns to seek cover behind during gunfights. It's durability is determined by the material it is made of.</description>
         <uiIconPath>DeployableCover/Things/Buildings/DeployableCoverA</uiIconPath> <!-- PLACEHOLDER -->
         <altitudeLayer>BuildingOnTop</altitudeLayer>
-        <pathCost>42</pathCost>
+        <pathCost>85</pathCost>
         <pathCostIgnoreRepeat>true</pathCostIgnoreRepeat>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
         <passability>Impassable</passability>
         <castEdgeShadows>false</castEdgeShadows>
-        <fillPercent>0.85</fillPercent>
+        <blockWind>true</blockWind>
+        <fillPercent>0.9</fillPercent>
         <canOverlapZones>false</canOverlapZones>
         <uiOrder>0</uiOrder>
         <rotatable>false</rotatable>
@@ -119,45 +160,14 @@
             <texPath>DeployableCover/Things/Buildings/DeployableCoverA</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shadowData>
-                <volume>(0, 0, 0)</volume> <!-- PLACEHOLDER -->
-                <offset>(0, 0, 0)</offset> <!-- PLACEHOLDER -->
+                <volume>(1, 0.5, 1)</volume>
+                <offset>(0, 0, 0)</offset>
             </shadowData>
         </graphicData>
-    </ThingDef>
-
-    <!-- ONLY USED FOR A FLYING ANIMATION -->
-    <ThingDef>
-        <defName>SW_CoverFlyer</defName>
-        <label>cover flyer</label>
-        <description>guess I need something here</description>
-        <drawerType>RealtimeOnly</drawerType>
-        <thingClass>DeployableCover.CoverFlyer</thingClass>
-        <altitudeLayer>BuildingOnTop</altitudeLayer>
-        <tickerType>Normal</tickerType>
-        <selectable>false</selectable>
-        <stuffCategories>
-            <li>Fabric</li>
-            <li>Leathery</li>
-        </stuffCategories>
-        <costStuffCount>1</costStuffCount>
-        <costList>
-            <Steel>1</Steel>
-        </costList>
-        <graphicData>
-            <texPath>DeployableCover/Things/Buildings/DeployableCoverA</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-        </graphicData>
         <modExtensions>
-            <li Class="DeployableCover.FlyerExtension">
-                <minScale>0.5</minScale>
-                <maxScale>1.0</maxScale>
-                <maxFlyTicks>60</maxFlyTicks>
-                <maxInflateTicks>30</maxInflateTicks>
-                <curveFactor>2</curveFactor>
-                <startDrawOffset>(0.5, 0, 2.1)</startDrawOffset>
-                <destDrawOffset>(0.5, 0, 0.375)</destDrawOffset>
-                <fleckDef>DustPuff</fleckDef>
-                <fleckMaxScale>1.75</fleckMaxScale>
+            <li Class="DeployableCover.CoverExtension">
+                <wobbleDuration>30</wobbleDuration>
+                <minScale>0.85</minScale>
             </li>
         </modExtensions>
     </ThingDef>

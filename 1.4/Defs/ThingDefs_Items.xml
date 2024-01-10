@@ -4,7 +4,7 @@
     <ThingDef ParentName="ResourceBase">
         <defName>SZ_CoverCharge</defName>
         <label>cover charge</label>
-        <description>A slightly volatile, airbag-like charge. Can be loaded into a deployable cover launcher for immediate deployment in rough situations.</description>
+        <description>A slightly volatile, airbag-like charge. Can be loaded into a deployable cover launcher for immediate deployment in spicy situations.</description>
         <tickerType>Normal</tickerType>
         <graphicData>
             <texPath>DeployableCover/Things/Items/CoverCharge</texPath>
