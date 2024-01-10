@@ -63,29 +63,27 @@ namespace DeployableCover
                     targetCells.Contains(targetCell.Cell),
             }, delegate (LocalTargetInfo target)
             {
-                MakeCover(target.Cell, map);
+                MakeFlyer(target.Cell, map);
                 lastLaunchTick = Find.TickManager.TicksGame;
             });
         }
-
-        public void MakeCover(IntVec3 target, Map map)
+        
+        public void MakeFlyer(IntVec3 target, Map map)
         {
-            Thing coverTemp = compLauncherStorage.GetDirectlyHeldThings().RandomElement();
+            Thing ammo = compLauncherStorage.GetDirectlyHeldThings().RandomElement();
 
-            if (coverTemp != null)
+            if (ammo != null)
             {
-                Building_InflatableCover inflatableCover = ThingMaker.MakeThing(CoreDefOf.SZ_DeployableCover, coverTemp.Stuff) as Building_InflatableCover;
+                CoverFlyer flyer = ThingMaker.MakeThing(CoreDefOf.SW_CoverFlyer, ammo.Stuff) as CoverFlyer;
 
-                if (inflatableCover != null)
+                if (flyer != null)
                 {
-                    inflatableCover.CoverStartCell = this.Position;
-                    inflatableCover.CoverDestCell = target;
+                    flyer.CoverStartCell = this.Position;
+                    flyer.CoverDestCell = target;
 
-                    GenSpawn.Spawn(inflatableCover, inflatableCover.CoverDestCell, map);
-                    inflatableCover.SetFaction(Faction.OfPlayer);
+                    GenSpawn.Spawn(flyer, flyer.CoverDestCell, map);
                 }
-
-                compLauncherStorage.innerContainer.Remove(coverTemp);
+                compLauncherStorage.innerContainer.Remove(ammo);
             }
         }
 

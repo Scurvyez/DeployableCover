@@ -3,8 +3,7 @@ using Verse;
 
 namespace DeployableCover
 {
-    /*
-    public class Building_InflatableCover : Building
+    public class CoverFlyer : ThingWithComps
     {
         private float curScale;
         private int spawnTime;
@@ -13,13 +12,11 @@ namespace DeployableCover
         private int timeSinceDestReached;
         private bool reachedDestination;
         private Vector3 curDrawPos;
+        protected int ticksFlying;
+        private CoverExtension coverExtension;
 
-        // flyer data
         public IntVec3 CoverStartCell { get; set; }
         public IntVec3 CoverDestCell { get; set; }
-        protected int ticksFlying;
-
-        private CoverExtension coverExtension;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -44,7 +41,7 @@ namespace DeployableCover
 
                 // Update currentDrawPos during movement phase
                 Vector3 targetPos = CalculateCurrentPosition();
-                curDrawPos = Vector3.Lerp(curDrawPos, targetPos, easedFlyTimeStep + ticksFlying) 
+                curDrawPos = Vector3.Lerp(curDrawPos, targetPos, easedFlyTimeStep + ticksFlying)
                     + new Vector3(0f, 0f, coverExtension.curveFactor) * GenMath.InverseParabola(num);
             }
             else if (timeSinceSpawn == coverExtension.maxFlyTicks)
@@ -63,6 +60,8 @@ namespace DeployableCover
                         float scaleTimeStep = (float)timeSinceDestReached / coverExtension.maxInflateTicks;
                         float easedscaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
                         curScale = Mathf.Lerp(coverExtension.minScale, coverExtension.maxScale, easedscaleTimeStep);
+
+                        TrySpawnAndKill();
                     }
                 }
             }
@@ -71,8 +70,8 @@ namespace DeployableCover
         private Vector3 CalculateCurrentPosition()
         {
             float lerpFactor = (float)timeSinceSpawn / coverExtension.maxFlyTicks;
-            return Vector3.Lerp(CoverStartCell.ToVector3() 
-                + coverExtension.startDrawOffset, CoverDestCell.ToVector3() 
+            return Vector3.Lerp(CoverStartCell.ToVector3()
+                + coverExtension.startDrawOffset, CoverDestCell.ToVector3()
                 + coverExtension.destDrawOffset, EasingFuncs.EaseOutQuad(lerpFactor));
         }
 
@@ -85,6 +84,18 @@ namespace DeployableCover
 
             Matrix4x4 matrix = Matrix4x4.TRS(drawPos, Rotation.AsQuat, new Vector3(curScale, 1f, curScale));
             Graphics.DrawMesh(MeshPool.plane10, matrix, Graphic.MatSingle, 0, null, 0, null, false, false, false);
+        }
+        
+        private void TrySpawnAndKill()
+        {
+            Thing cover = ThingMaker.MakeThing(CoreDefOf.SZ_DeployableCover, this.Stuff);
+            if (cover != null)
+            {
+                cover.Position = this.Position;
+                GenSpawn.Spawn(cover, cover.Position, this.Map);
+                cover.SetFaction(Faction);
+                this.Destroy();
+            }
         }
 
         public override void ExposeData()
@@ -99,5 +110,4 @@ namespace DeployableCover
             Scribe_Values.Look(ref timeSinceDestReached, "timeSinceDestReached", 0);
         }
     }
-    */
 }

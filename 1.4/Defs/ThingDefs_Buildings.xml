@@ -76,8 +76,6 @@
         <defName>SZ_DeployableCover</defName>
         <label>deployable cover</label>
         <description>A piece of rapidly inflatable shielding for pawns to seek cover behind during gunfights.</description>
-        <drawerType>RealtimeOnly</drawerType>
-        <thingClass>DeployableCover.Building_InflatableCover</thingClass>
         <uiIconPath>DeployableCover/Things/Buildings/DeployableCoverA</uiIconPath> <!-- PLACEHOLDER -->
         <altitudeLayer>BuildingOnTop</altitudeLayer>
         <pathCost>42</pathCost>
@@ -88,7 +86,6 @@
         <fillPercent>0.85</fillPercent>
         <canOverlapZones>false</canOverlapZones>
         <uiOrder>0</uiOrder>
-        <tickerType>Normal</tickerType>
         <rotatable>false</rotatable>
         <selectable>true</selectable>
         <minifiedDef>MinifiedThing</minifiedDef>
@@ -122,9 +119,33 @@
             <texPath>DeployableCover/Things/Buildings/DeployableCoverA</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shadowData>
-                <volume>(0, 0, 0)</volume>
-                <offset>(0, 0, 0)</offset>
+                <volume>(0, 0, 0)</volume> <!-- PLACEHOLDER -->
+                <offset>(0, 0, 0)</offset> <!-- PLACEHOLDER -->
             </shadowData>
+        </graphicData>
+    </ThingDef>
+
+    <!-- ONLY USED FOR A FLYING ANIMATION -->
+    <ThingDef>
+        <defName>SW_CoverFlyer</defName>
+        <label>cover flyer</label>
+        <description>guess I need something here</description>
+        <drawerType>RealtimeOnly</drawerType>
+        <thingClass>DeployableCover.CoverFlyer</thingClass>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <tickerType>Normal</tickerType>
+        <selectable>false</selectable>
+        <stuffCategories>
+            <li>Fabric</li>
+            <li>Leathery</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+        <costList>
+            <Steel>1</Steel>
+        </costList>
+        <graphicData>
+            <texPath>DeployableCover/Things/Buildings/DeployableCoverA</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
         </graphicData>
         <modExtensions>
             <li Class="DeployableCover.CoverExtension">
