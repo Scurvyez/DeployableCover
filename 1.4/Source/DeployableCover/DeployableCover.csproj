@@ -54,11 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefModExtensions\LauncherExtension.cs" />
-    <Compile Include="DefModExtensions\CoverExtension.cs" />
+    <Compile Include="DefModExtensions\FlyerExtension.cs" />
     <Compile Include="JobDrivers\JobDriver_LoadCharges.cs" />
     <Compile Include="MapComps\MapComponent_LauncherGetter.cs" />
     <Compile Include="ThingClasses\Building_CoverLauncher.cs" />
-    <Compile Include="ThingClasses\Building_InflatableCover.cs" />
     <Compile Include="ThingClasses\CoverFlyer.cs" />
     <Compile Include="ThingComps\CompProperties\CompProperties_LauncherStorage.cs" />
     <Compile Include="ThingComps\CompLauncherStorage.cs" />

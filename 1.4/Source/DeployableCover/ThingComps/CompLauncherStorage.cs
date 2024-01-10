@@ -14,7 +14,10 @@ namespace DeployableCover
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            innerContainer = new ThingOwner<Thing>(this);
+            if (!respawningAfterLoad)
+            {
+                innerContainer = new ThingOwner<Thing>(this);
+            }
         }
 
         public void GetChildHolders(List<IThingHolder> outChildren)

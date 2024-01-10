@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace DeployableCover
@@ -13,7 +14,7 @@ namespace DeployableCover
         private bool reachedDestination;
         private Vector3 curDrawPos;
         protected int ticksFlying;
-        private CoverExtension coverExtension;
+        private FlyerExtension flyerExtension;
 
         public IntVec3 CoverStartCell { get; set; }
         public IntVec3 CoverDestCell { get; set; }
@@ -21,58 +22,58 @@ namespace DeployableCover
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            coverExtension = def.GetModExtension<CoverExtension>();
+            flyerExtension = def.GetModExtension<FlyerExtension>();
             spawnTime = Find.TickManager.TicksGame;
             ticksFlying = 0;
-            curDrawPos = CoverStartCell.ToVector3() + coverExtension.startDrawOffset;
-            curScale = coverExtension.minScale;
+            curDrawPos = CoverStartCell.ToVector3() + flyerExtension.startDrawOffset;
+            curScale = flyerExtension.minScale;
         }
 
         public override void Tick()
         {
             base.Tick();
             timeSinceSpawn = Find.TickManager.TicksGame - spawnTime;
-            if (timeSinceSpawn < coverExtension.maxFlyTicks)
+            if (timeSinceSpawn < flyerExtension.maxFlyTicks)
             {
                 ticksFlying++;
-                float num = (float)ticksFlying / (float)coverExtension.maxFlyTicks;
-                float flyTimeStep = (float)timeSinceSpawn / coverExtension.maxFlyTicks;
+                float num = (float)ticksFlying / (float)flyerExtension.maxFlyTicks;
+                float flyTimeStep = (float)timeSinceSpawn / flyerExtension.maxFlyTicks;
                 float easedFlyTimeStep = EasingFuncs.EaseOutQuad(flyTimeStep);
 
                 // Update currentDrawPos during movement phase
                 Vector3 targetPos = CalculateCurrentPosition();
                 curDrawPos = Vector3.Lerp(curDrawPos, targetPos, easedFlyTimeStep + ticksFlying)
-                    + new Vector3(0f, 0f, coverExtension.curveFactor) * GenMath.InverseParabola(num);
+                    + new Vector3(0f, 0f, flyerExtension.curveFactor) * GenMath.InverseParabola(num);
             }
-            else if (timeSinceSpawn == coverExtension.maxFlyTicks)
+            else if (timeSinceSpawn == flyerExtension.maxFlyTicks)
             {
                 reachedDestination = true;
+                DrawEffects();
                 timeReachedDestination = Find.TickManager.TicksGame;
             }
-            else
+            else if (reachedDestination)
             {
-                if (reachedDestination)
+                timeSinceDestReached = Find.TickManager.TicksGame - timeReachedDestination;
+                if (timeSinceDestReached < flyerExtension.maxInflateTicks)
                 {
-                    timeSinceDestReached = Find.TickManager.TicksGame - timeReachedDestination;
-                    if (timeSinceDestReached < coverExtension.maxInflateTicks)
-                    {
-                        // Transition to scaling phase only if the destination has been reached
-                        float scaleTimeStep = (float)timeSinceDestReached / coverExtension.maxInflateTicks;
-                        float easedscaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
-                        curScale = Mathf.Lerp(coverExtension.minScale, coverExtension.maxScale, easedscaleTimeStep);
-
-                        TrySpawnAndKill();
-                    }
+                    // Transition to scaling phase only if the destination has been reached
+                    float scaleTimeStep = (float)timeSinceDestReached / flyerExtension.maxInflateTicks;
+                    float easedscaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
+                    curScale = Mathf.Lerp(flyerExtension.minScale, flyerExtension.maxScale, easedscaleTimeStep);
+                }
+                if (this.IsHashIntervalTick(60))
+                {
+                    TrySpawnAndKill();
                 }
             }
         }
 
         private Vector3 CalculateCurrentPosition()
         {
-            float lerpFactor = (float)timeSinceSpawn / coverExtension.maxFlyTicks;
+            float lerpFactor = (float)timeSinceSpawn / flyerExtension.maxFlyTicks;
             return Vector3.Lerp(CoverStartCell.ToVector3()
-                + coverExtension.startDrawOffset, CoverDestCell.ToVector3()
-                + coverExtension.destDrawOffset, EasingFuncs.EaseOutQuad(lerpFactor));
+                + flyerExtension.startDrawOffset, CoverDestCell.ToVector3()
+                + flyerExtension.destDrawOffset, EasingFuncs.EaseOutQuad(lerpFactor));
         }
 
         public override void Draw()
@@ -93,8 +94,20 @@ namespace DeployableCover
             {
                 cover.Position = this.Position;
                 GenSpawn.Spawn(cover, cover.Position, this.Map);
-                cover.SetFaction(Faction);
+                cover.SetFaction(Map.ParentFaction);
                 this.Destroy();
+            }
+        }
+
+        private void DrawEffects()
+        {
+            if (flyerExtension != null && flyerExtension.fleckDef != null)
+            {
+                FleckCreationData fCD = FleckMaker.GetDataStatic(curDrawPos, Map, flyerExtension.fleckDef);
+                fCD.rotationRate = Rand.RangeInclusive(-240, 240);
+                fCD.scale = flyerExtension.fleckMaxScale;
+                fCD.def.graphicData.drawOffset = new Vector3(0, curDrawPos.y, 0);
+                Map.flecks.CreateFleck(fCD);
             }
         }
 
