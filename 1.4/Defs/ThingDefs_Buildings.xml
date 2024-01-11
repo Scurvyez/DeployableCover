@@ -142,7 +142,7 @@
             <Steel>1</Steel>
         </costList>
         <statBases>
-            <MaxHitPoints>300</MaxHitPoints>
+            <MaxHitPoints>200</MaxHitPoints>
             <Beauty>-10</Beauty>
             <MarketValue>2.55</MarketValue>
             <Mass>0.1</Mass>
