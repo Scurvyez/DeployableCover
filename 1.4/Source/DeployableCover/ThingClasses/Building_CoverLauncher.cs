@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
-using Verse.AI;
-using Verse.Noise;
 
 namespace DeployableCover
 {
     [StaticConstructorOnStartup]
-    public class Building_CoverLauncher : Building/*, ITargetingSource*/
+    public class Building_CoverLauncher : Building
     {
         public static readonly Texture2D LaunchIcon = ContentFinder<Texture2D>.Get("DeployableCover/UI/Commands/LaunchCover");
         private LauncherExtension launcherExtension;
@@ -22,23 +20,6 @@ namespace DeployableCover
         private bool CanLaunchNow => compPowerTrader.PowerOn
             && TimeSinceLastLaunch > launcherExtension.cooldownTicks
             && compLauncherStorage.innerContainer.Count > 0;
-
-        /*
-        public virtual bool MultiSelect => true;
-        public virtual bool CasterIsPawn => false;
-        public virtual Pawn CasterPawn => null;
-        public virtual bool IsMeleeAttack => false;
-        public virtual bool HidePawnTooltips => true;
-        public virtual bool Targetable => true;
-        public virtual Thing Caster => this;
-        public virtual Verb GetVerb => null;
-        public virtual Texture2D UIIcon => null;
-        public virtual TargetingParameters targetParams => new TargetingParameters
-        {
-            canTargetLocations = true
-        };
-        public virtual ITargetingSource DestinationSelector => null;
-        */
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -71,7 +52,6 @@ namespace DeployableCover
             IntVec3 position = Position;
             IEnumerable<IntVec3> targetCells = GenRadial.RadialCellsAround(position, launcherExtension.launchRadius, true);
 
-            // Open a selector to allow the player to choose a specific cell
             Find.Selector.ClearSelection();
             Find.Targeter.BeginTargeting(new TargetingParameters
             {
@@ -87,45 +67,6 @@ namespace DeployableCover
                 lastLaunchTick = Find.TickManager.TicksGame;
             });
         }
-
-        /*
-        public virtual void OrderForceTarget(LocalTargetInfo target)
-        {
-            
-        }
-
-        public virtual bool CanHitTarget(LocalTargetInfo target)
-        {
-            if (Caster == null || !Caster.Spawned)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public virtual bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
-        {
-            if (!target.Cell.InBounds(Map) && !target.Cell.Standable(Map) && target.Cell.GetFirstBuilding(Map) != null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public virtual void DrawHighlight(LocalTargetInfo target)
-        {
-            if (target.IsValid)
-            {
-                GenDraw.DrawTargetHighlight(target);
-            }
-        }
-
-        public virtual void OnGUI(LocalTargetInfo target)
-        {
-            Texture2D icon = ((!target.IsValid) ? TexCommand.CannotShoot : ((!(UIIcon != BaseContent.BadTex)) ? TexCommand.Attack : UIIcon));
-            GenUI.DrawMouseAttachment(icon);
-        }
-        */
 
         public void MakeFlyer(IntVec3 target, Map map)
         {
