@@ -167,7 +167,7 @@
         <modExtensions>
             <li Class="DeployableCover.CoverExtension">
                 <wobbleDuration>30</wobbleDuration>
-                <minScale>0.85</minScale>
+                <minScale>0.925</minScale>
             </li>
         </modExtensions>
     </ThingDef>
