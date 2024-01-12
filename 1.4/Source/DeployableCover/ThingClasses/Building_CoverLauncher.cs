@@ -9,7 +9,7 @@ using Verse.Noise;
 namespace DeployableCover
 {
     [StaticConstructorOnStartup]
-    public class Building_CoverLauncher : Building, ITargetingSource
+    public class Building_CoverLauncher : Building/*, ITargetingSource*/
     {
         public static readonly Texture2D LaunchIcon = ContentFinder<Texture2D>.Get("DeployableCover/UI/Commands/LaunchCover");
         private LauncherExtension launcherExtension;
@@ -19,10 +19,11 @@ namespace DeployableCover
 
         private int TimeSinceLastLaunch => Find.TickManager.TicksGame - lastLaunchTick;
 
-        /*private bool CanLaunchNow => compPowerTrader.PowerOn
+        private bool CanLaunchNow => compPowerTrader.PowerOn
             && TimeSinceLastLaunch > launcherExtension.cooldownTicks
-            && compLauncherStorage.innerContainer.Count > 0;*/
+            && compLauncherStorage.innerContainer.Count > 0;
 
+        /*
         public virtual bool MultiSelect => true;
         public virtual bool CasterIsPawn => false;
         public virtual Pawn CasterPawn => null;
@@ -37,6 +38,7 @@ namespace DeployableCover
             canTargetLocations = true
         };
         public virtual ITargetingSource DestinationSelector => null;
+        */
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -58,12 +60,11 @@ namespace DeployableCover
                 defaultLabel = "Deploy cover",
                 defaultDesc = "Designate an area for launching deployable cover.",
                 icon = LaunchIcon,
-                action = ,
-                disabled = !ValidateTarget() && !CanHitTarget()
+                action = LaunchCoverArea,
+                disabled = !CanLaunchNow
             };
         }
 
-        /*
         private void LaunchCoverArea()
         {
             Map map = Map;
@@ -86,8 +87,8 @@ namespace DeployableCover
                 lastLaunchTick = Find.TickManager.TicksGame;
             });
         }
-        */
 
+        /*
         public virtual void OrderForceTarget(LocalTargetInfo target)
         {
             
@@ -119,11 +120,12 @@ namespace DeployableCover
             }
         }
 
-        public virtual void OnGUI(LocalTargetInfo target) /* FIX THIS LATER */
+        public virtual void OnGUI(LocalTargetInfo target)
         {
             Texture2D icon = ((!target.IsValid) ? TexCommand.CannotShoot : ((!(UIIcon != BaseContent.BadTex)) ? TexCommand.Attack : UIIcon));
             GenUI.DrawMouseAttachment(icon);
         }
+        */
 
         public void MakeFlyer(IntVec3 target, Map map)
         {
