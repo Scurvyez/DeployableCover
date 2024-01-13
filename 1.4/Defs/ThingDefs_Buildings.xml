@@ -61,11 +61,14 @@
                         <li>SZ_CoverCharge</li>
                     </thingDefs>
                 </chargeFilter>
+                <barEmptyColor>(1, 0.4, 0.4, 1)</barEmptyColor>
+                <barFullColor>(0.4, 1, 0.54902, 1)</barFullColor>
             </li>
         </comps>
         <modExtensions>
             <li Class="DeployableCover.LauncherExtension">
                 <launchRadius>50</launchRadius>
+                <targetRadius>3</targetRadius>
                 <cooldownTicks>180</cooldownTicks>
             </li>
         </modExtensions>

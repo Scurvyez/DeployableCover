@@ -61,7 +61,7 @@ namespace DeployableCover
                     float easedscaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
                     curScale = Mathf.Lerp(flyerExtension.minScale, flyerExtension.maxScale, easedscaleTimeStep);
                 }
-                if (this.IsHashIntervalTick(60))
+                if (this.IsHashIntervalTick(120))
                 {
                     TrySpawnAndKill();
                 }

@@ -44,7 +44,7 @@ namespace DeployableCover
                 {
                     float progress = (float)elapsedTicks / coverExtension.wobbleDuration;
                     float easedProgress = EasingFuncs.EaseOutElastic(progress);
-                    curScale = Mathf.Lerp(coverExtension.minScale * (1f - Mathf.Clamp01(damageAmount)), originalScale, easedProgress);
+                    curScale = Mathf.Lerp(coverExtension.minScale, originalScale, easedProgress);
                 }
             }
             else
