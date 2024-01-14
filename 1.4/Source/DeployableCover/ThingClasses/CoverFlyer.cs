@@ -15,6 +15,7 @@ namespace DeployableCover
         private Vector3 curDrawPos;
         protected int ticksFlying;
         private FlyerExtension flyerExtension;
+        private int scalingAnimationTicks;
 
         public IntVec3 CoverStartCell { get; set; }
         public IntVec3 CoverDestCell { get; set; }
@@ -56,14 +57,18 @@ namespace DeployableCover
                 timeSinceDestReached = Find.TickManager.TicksGame - timeReachedDestination;
                 if (timeSinceDestReached < flyerExtension.maxInflateTicks)
                 {
-                    // Transition to scaling phase only if the destination has been reached
+                    scalingAnimationTicks++;
                     float scaleTimeStep = (float)timeSinceDestReached / flyerExtension.maxInflateTicks;
-                    float easedscaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
-                    curScale = Mathf.Lerp(flyerExtension.minScale, flyerExtension.maxScale, easedscaleTimeStep);
+                    float easedScaleTimeStep = EasingFuncs.EaseOutElastic(scaleTimeStep);
+                    curScale = Mathf.Lerp(flyerExtension.minScale, flyerExtension.maxScale, easedScaleTimeStep);
                 }
-                if (this.IsHashIntervalTick(120))
+                else
                 {
-                    TrySpawnAndKill();
+                    if (scalingAnimationTicks > 0)
+                    {
+                        // slight graphical flicker when despaning this and spawning new object :/
+                        SpawnAndKill();
+                    }
                 }
             }
         }
@@ -87,16 +92,13 @@ namespace DeployableCover
             Graphics.DrawMesh(MeshPool.plane10, matrix, Graphic.MatSingle, 0, null, 0, null, false, false, false);
         }
         
-        private void TrySpawnAndKill()
+        private void SpawnAndKill()
         {
             Thing cover = ThingMaker.MakeThing(CoreDefOf.SZ_DeployableCover, this.Stuff);
-            if (cover != null)
-            {
-                cover.Position = this.Position;
-                GenSpawn.Spawn(cover, cover.Position, this.Map);
-                cover.SetFaction(Map.ParentFaction);
-                this.Destroy();
-            }
+            cover.Position = this.Position;
+            GenSpawn.Spawn(cover, cover.Position, this.Map);
+            cover.SetFaction(Map.ParentFaction);
+            this.Destroy();
         }
 
         private void DrawEffects()

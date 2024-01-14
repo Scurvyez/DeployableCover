@@ -27,7 +27,8 @@ namespace DeployableCover
 
         private bool CanLaunchNow => compPowerTrader.PowerOn
             && TimeSinceLastLaunch > launcherExtension.cooldownTicks
-            && compLauncherStorage.innerContainer.Count > 0;
+            && compLauncherStorage.innerContainer.Count > 0
+            && !Position.Roofed(Map);
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -110,7 +111,7 @@ namespace DeployableCover
             int amountAvail = compLauncherStorage.innerContainer.Count;
             if (amountAvail > 0)
             {
-                Find.WindowStack.Add(new Dialog_Slider("Select Launch Amount", 1, amountAvail, value =>
+                Find.WindowStack.Add(new Dialog_Slider("Select Launch Amount", 1, 5, value =>
                 {
                     launchAmount = Mathf.RoundToInt(value);
                 }));
@@ -128,11 +129,11 @@ namespace DeployableCover
             {
                 canTargetLocations = true,
                 validator = targetCell =>
-                    targetCell.Cell.InBounds(map) && // cell is in bounds
-                    targetCell.Cell.Standable(map) && // can be stood in by a pawn
-                    targetCell.Cell.GetFirstBuilding(map) == null && // has no building in it
-                    targetCell.Cell.GetRoof(map) == null && // has no roof overhead
-                    !targetCell.Cell.Fogged(map) // isn't fogged
+                    targetCell.Cell.InBounds(map) 
+                    && targetCell.Cell.Standable(map) 
+                    && targetCell.Cell.GetFirstBuilding(map) == null 
+                    && targetCell.Cell.GetRoof(map) == null 
+                    && !targetCell.Cell.Fogged(map)
             }, delegate (LocalTargetInfo target)
             {
                 MakeFlyers(target.Cell, map);
@@ -166,10 +167,12 @@ namespace DeployableCover
         private IntVec3 GetRandomCellInRadius(IntVec3 center, int radius, Map map)
         {
             IEnumerable<IntVec3> cellsInRadius = GenRadial.RadialCellsAround(center, radius, true).Where(cell =>
-                cell.IsValid && // is valid
-                !cell.Fogged(map) && // is not fogged
-                cell.Walkable(map) && // is walkable
-                cell.GetFirstBuilding(map) == null); // has no building in it
+                cell.IsValid 
+                && !cell.Fogged(map) 
+                && cell.Walkable(map) 
+                && map.thingGrid.ThingsListAt(cell).NullOrEmpty() 
+                && cell.GetFirstBuilding(map) == null
+                && !cell.Roofed(map));
             return cellsInRadius.RandomElement();
         }
 

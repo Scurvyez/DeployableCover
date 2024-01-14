@@ -8,7 +8,7 @@
         <thingClass>DeployableCover.Building_CoverLauncher</thingClass>
         <category>Building</category>
         <label>Deployable cover launcher</label>
-        <description>A launcher used for the immediate deployment of inflatable cover in firefights.</description>
+        <description>A launcher used for the immediate deployment of inflatable cover in firefights. Any pieces of cover launched will be deployed to open, unoccupied cells only. Must be placed outside to work.</description>
         <drawerType>RealtimeOnly</drawerType>
         <size>(1, 1)</size>
         <blockWind>true</blockWind>
